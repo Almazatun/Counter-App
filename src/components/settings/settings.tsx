@@ -3,7 +3,6 @@ import {Button} from "../button/button";
 
 type SettingsType = {
     title: string
-    disable: {}
     statusStartValue: (value: number) => void
     statusMaxValue: (value: number) => void
     setDisabled: (event: boolean) => void
@@ -19,33 +18,15 @@ type SettingsType = {
 
 export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsType) => {
 
-    const initialStartValue = Number(window.localStorage.getItem("startValue"))
-    const initialMaxtValue = Number(window.localStorage.getItem("maxValue"))
-    const initialSteptValue = Number(window.localStorage.getItem("step"))
-
-    console.log(initialStartValue)
-    console.log(initialMaxtValue)
-    console.log(initialSteptValue)
 
     let [startValue, setStartValue] = useState<number>(0)
     // console.log(startValue)
     let [maxValue, setMaxValue] = useState<number>(0)
     // console.log(maxValue)
-    let [step, setStep] = useState<number>()
+    let [step, setStep] = useState<number>(1)
 
 
-    useEffect(() => {
-        window.localStorage.setItem("startValue", JSON.stringify(startValue))
-        window.localStorage.setItem("maxValue", JSON.stringify(maxValue))
-        window.localStorage.setItem("step", JSON.stringify(step))
-    })
 
-    // const LocalStorageEventScore = () => {
-    //     props.statusStartValue(initialStartValue);
-    //     props.statusMaxValue(initialMaxtValue);
-    //     props.setStepValue(initialSteptValue)
-    //
-    // }
 
     const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
         let newStartValue = event.currentTarget.value;
@@ -66,11 +47,33 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
         props.setStepValue(newStepValueParsentIN)
         setStep(newStepValueParsentIN);
     }
+    useEffect(() => {
+        const initialStartValue = Number(localStorage.getItem("startValue"))
+        const initialMaxtValue = Number(localStorage.getItem("maxValue"))
+        const initialSteptValue = Number(localStorage.getItem("step"))
+
+        setStartValue(initialStartValue)
+        setMaxValue(initialMaxtValue)
+        setStep(initialSteptValue)
+
+    },[])
+
 
     const onSetEvent = () => {
+
+        localStorage.setItem("startValue", JSON.stringify(startValue))
+        localStorage.setItem("maxValue", JSON.stringify(maxValue))
+        localStorage.setItem("step", JSON.stringify(step))
+
+
+        props.statusStartValue(startValue);
+        props.statusMaxValue(maxValue);
+        props.setStepValue(step)
         props.setDisabled(false)
         props.setCount(startValue)
     }
+
+
 
     let container = {
         border: "2px solid yellow",
@@ -126,11 +129,6 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
                 : false;
 
 
-    // let startValueUnderZero = startValue < 0 ? inputStyleMinus : inputStyle
-    // let maxValueBoolean = maxValue <= startValue ? inputStyleMinus : inputStyle
-    // // let DisabledButtonBoolean = startValue < 0 ? true : false
-
-
     return (
         <div style={container}>
             <div style={buttonStyle} onClick={() => props.setDisabled(true)}>
@@ -140,7 +138,7 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
                            type="number"
                            step={step}
                            onChange={onChangeMaxValue}
-                           max={""}
+                           value={maxValue}
                     />
                 </form>
                 <form>
@@ -149,7 +147,7 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
                            type="number"
                            onChange={onChangeValue}
                            step={step}
-                           min={""}
+                           value={startValue}
                     />
                 </form>
                 <form>
@@ -157,6 +155,7 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
                     <input style={inputStyleStep}
                            type="number"
                            onChange={onChangeValueStep}
+                           value={step}
                            min={1}
                     />
                 </form>

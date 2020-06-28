@@ -3,16 +3,10 @@ import './App.css';
 import {Button} from "./components/button/button";
 import {Settings} from "./components/settings/settings";
 
-type AppType = {
-
-}
 
 
-export const App: React.FC<AppType> = (props: AppType) => {
 
-    // const initialStartValue = Number(window.localStorage.getItem("startValue"))
-    // const initialMaxtValue = Number(window.localStorage.getItem("maxValue"))
-
+export const App: React.FC = () => {
 
     let [value, setValue] = useState<number>(0)
     let [count, setCount] = useState<number>(value)
@@ -21,37 +15,6 @@ export const App: React.FC<AppType> = (props: AppType) => {
     let [step, setStep] = useState<number>(1)
     let [dis, setDis] = useState<boolean>(true)
 
-    // React.useEffect(() => {
-    //     const startData = localStorage.getItem("startValue");
-    //     if (startData) {
-    //         setCount(JSON.parse(startData))
-    //     }
-    // });
-    //
-    //
-    // React.useEffect(() => {
-    //     localStorage.setItem("startValue", JSON.stringify(value))
-    // })
-
-
-
-    // React.useEffect(() => {
-    //     const startData = localStorage.getItem("startValue");
-    //     if (startData) {
-    //         setCount(JSON.parse(startData))
-    //     }
-    // });
-    //
-    // React.useEffect(() => {
-    //     localStorage.setItem("startValue", JSON.stringify(count))
-    // })
-
-
-
-
-
-
-    // console.log(maxValue)
 
     const statusStartValue = (value: number) => {
         setValue(value)
@@ -67,8 +30,6 @@ export const App: React.FC<AppType> = (props: AppType) => {
         setStep(event)
     }
 
-
-
     let Max: number = maxValue
 
     const upCount = () => {
@@ -78,19 +39,9 @@ export const App: React.FC<AppType> = (props: AppType) => {
         }
     }
 
-
     const switchSetCount = () => {
         setCount(value)
     }
-
-    // useEffect(() => {
-    //     window.localStorage.setItem("startValue", JSON.stringify(value))
-    //     window.localStorage.setItem("maxValue", JSON.stringify(maxValue))
-    //
-    // })
-
-
-
 
     let container = {
         border: "2px solid yellow",
@@ -147,37 +98,21 @@ export const App: React.FC<AppType> = (props: AppType) => {
             : value > maxValue ? <div style={IncorrectValue}>Incorrect value</div>
                 :<div>Please enter value and click SET</div>;
 
-
-    let BasicView = dis === true ? viewScore
+    let BasicView = dis ? viewScore
                 : count
-
-    // let DisabledButtonTernary = startValue < 0 ? true
-    //     : startValue === maxValue ? true
-    //         : startValue > maxValue ? true
-    //             : false;
-
-
 
     let isDisabled = count === Max ? true
         : dis ? true
             : false
 
-
     let Disabled = count === Max ? false : true;
 
-
-
     return (
-
-
-
-
         <div className="App">
             <header className="App-header">
                 <Settings
                     title={"set"}
                     // onClick={upCount}
-                    disable={isDisabled}
                     statusStartValue = {statusStartValue}
                     statusMaxValue={statusMaxValue}
                     setDisabled={setDisabled}
