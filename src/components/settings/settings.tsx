@@ -9,10 +9,6 @@ type SettingsType = {
     BooleanForSetButton: boolean
     setCount: (Dispatch<SetStateAction<number>>)
     setStepValue: (event: number) => void
-    // switchSetCount: () => void
-    // upCount: () => void
-
-
 }
 
 
@@ -20,44 +16,40 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
 
 
     let [startValue, setStartValue] = useState<number>(0)
-    // console.log(startValue)
     let [maxValue, setMaxValue] = useState<number>(0)
-    // console.log(maxValue)
     let [step, setStep] = useState<number>(1)
 
-
-
-
     const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
-        let newStartValue = event.currentTarget.value;
-        let newStartValueParsentIN = parseInt(newStartValue);
-        setStartValue(newStartValueParsentIN);
-        props.statusStartValue(newStartValueParsentIN);
-    }
+        let newStartValue = parseInt(event.currentTarget.value);
+        setStartValue(newStartValue);
+        props.statusStartValue(newStartValue);
+    };
     const onChangeMaxValue = (event: ChangeEvent<HTMLInputElement>) => {
-        let newMaxValue = event.currentTarget.value;
-        let newMaxValueParsentIN = parseInt(newMaxValue);
-        props.statusMaxValue(newMaxValueParsentIN);
-
-        setMaxValue(newMaxValueParsentIN)
-    }
+        let newMaxValue = parseInt(event.currentTarget.value);
+        props.statusMaxValue(newMaxValue);
+        setMaxValue(newMaxValue)
+    };
     const onChangeValueStep = (event: ChangeEvent<HTMLInputElement>) => {
-        let newSteptValue = event.currentTarget.value;
-        let newStepValueParsentIN = parseInt(newSteptValue);
-        props.setStepValue(newStepValueParsentIN)
-        setStep(newStepValueParsentIN);
-    }
+        let newSteptValue = parseInt(event.currentTarget.value);
+        props.setStepValue(newSteptValue)
+        setStep(newSteptValue);
+    };
+
     useEffect(() => {
+
         const initialStartValue = Number(localStorage.getItem("startValue"))
-        const initialMaxtValue = Number(localStorage.getItem("maxValue"))
-        const initialSteptValue = Number(localStorage.getItem("step"))
-
         setStartValue(initialStartValue)
+        const initialMaxtValue = Number(localStorage.getItem("maxValue"))
         setMaxValue(initialMaxtValue)
+        const initialSteptValue = Number(localStorage.getItem("step"))
         setStep(initialSteptValue)
+        props.statusStartValue(initialStartValue);
+        props.statusMaxValue(initialMaxtValue);
+        props.setStepValue(initialSteptValue)
+        props.setDisabled(false)
+        props.setCount(initialStartValue)
 
-    },[])
-
+    }, []);
 
     const onSetEvent = () => {
 
@@ -65,15 +57,10 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
         localStorage.setItem("maxValue", JSON.stringify(maxValue))
         localStorage.setItem("step", JSON.stringify(step))
 
-
-        props.statusStartValue(startValue);
-        props.statusMaxValue(maxValue);
-        props.setStepValue(step)
         props.setDisabled(false)
         props.setCount(startValue)
-    }
 
-
+    };
 
     let container = {
         border: "2px solid yellow",
@@ -108,7 +95,6 @@ export const Settings: React.FunctionComponent<SettingsType> = (props: SettingsT
         marginLeft: "20px",
         fontSize: "3vh",
     }
-
     let inputStyleMinus = {
         height: "4vh",
         width: "50px",
